@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="لعبة مسابقات عربية تفاعلية مستوحاة من أجواء برامج المسابقات التلفزيونية الكبرى">
+    <meta name="theme-color" content="#0a0a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>تحدي المليون</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- ===== شاشة التحميل ===== -->
+    <div id="loading-screen" class="screen active">
+        <div class="loading-content">
+            <div class="loading-logo">
+                <div class="loading-diamond">
+                    <div class="diamond-inner">💎</div>
+                </div>
+            </div>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loading-bar"></div>
+            </div>
+            <p class="loading-text" id="loading-text">جارٍ تحميل المسابقة...</p>
+        </div>
+    </div>
+
+    <!-- ===== الشاشة الرئيسية (HOME) ===== -->
+    <div id="home-screen" class="screen">
+        <!-- خلفية متحركة -->
+        <canvas id="bg-canvas"></canvas>
+        <div class="home-overlay">
+            <!-- الشعار -->
+            <div class="logo-container" id="main-logo">
+                <div class="logo-glow"></div>
+                <div class="logo-diamond">
+                    <span class="diamond-icon">💎</span>
+                </div>
+                <h1 class="logo-title">تحدي المليون</h1>
+                <p class="logo-subtitle">مسابقة المعرفة الكبرى</p>
+            </div>
+
+            <!-- أزرار الشاشة الرئيسية -->
+            <div class="home-buttons">
+                <button id="btn-start" class="btn btn-primary btn-lg pulse-glow">
+                    <span class="btn-icon">🎮</span>
+                    ابدأ المسابقة
+                </button>
+                <button id="btn-admin" class="btn btn-secondary">
+                    <span class="btn-icon">⚙️</span>
+                    لوحة التحكم
+                </button>
+            </div>
+
+            <!-- أزرار التحكم السفلية -->
+            <div class="home-controls">
+                <button id="btn-settings" class="btn-icon-only" title="الإعدادات">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z"/></svg>
+                </button>
+                <button id="btn-mute" class="btn-icon-only" title="كتم الصوت">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="icon-sound-on"><path d="M3,9v6h4l5,5V4L7,9H3z M16.5,12c0-1.77-1.02-3.29-2.5-4.03v8.05C15.48,15.29,16.5,13.77,16.5,12z M14,3.23v2.06c2.89,0.86,5,3.54,5,6.71s-2.11,5.85-5,6.71v2.06c4.01-0.91,7-4.49,7-8.77S18.01,4.14,14,3.23z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="icon-sound-off hidden"><path d="M16.5,12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45,2.45C16.48,12.42,16.5,12.21,16.5,12z M19,12c0,0.94-0.2,1.82-0.54,2.64l1.51,1.51C20.63,14.91,21,13.5,21,12c0-4.28-2.99-7.86-7-8.77v2.06c2.89,0.86,5,3.54,5,6.71z M4.27,3L3,4.27L7.73,9H3v6h4l5,5v-6.73l4.25,4.25c-0.67,0.52-1.42,0.93-2.25,1.18v2.06c1.38-0.31,2.63-0.95,3.69-1.81L19.73,21 L21,19.73l-9-9L4.27,3z M12,4L9.91,6.09L12,8.18V4z"/></svg>
+                </button>
+                <button id="btn-fullscreen" class="btn-icon-only" title="ملء الشاشة">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M7,14H5v5h5v-2H7V14z M5,10h2V7h3V5H5V10z M17,17h-3v2h5v-5h-2V17z M14,5v2h3v3h2V5H14z"/></svg>
+                </button>
+                <button id="btn-reduce-motion" class="btn-icon-only" title="تقليل الحركة">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C6.48,2,2,6.48,2,12s4.48,10,10,10s10-4.48,10-10S17.52,2,12,2z M12,20c-4.41,0-8-3.59-8-8s3.59-8,8-8s8,3.59,8,8 S16.41,20,12,20z M8,12l4,4l4-4H8z"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== شاشة إدخال بيانات المتسابق (PLAYER_SETUP) ===== -->
+    <div id="player-setup-screen" class="screen">
+        <canvas id="bg-canvas-setup"></canvas>
+        <div class="setup-overlay">
+            <div class="setup-container">
+                <h2 class="setup-title">
+                    <span class="title-icon">🌟</span>
+                    أدخل بياناتك
+                </h2>
+                <div class="setup-form">
+                    <div class="form-group">
+                        <label for="player-name">اسم المتسابق *</label>
+                        <input type="text" id="player-name" class="form-input" placeholder="أدخل اسمك هنا..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="team-name">اسم الفريق (اختياري)</label>
+                        <input type="text" id="team-name" class="form-input" placeholder="اسم فريقك...">
+                    </div>
+                    <div class="form-group">
+                        <label for="player-avatar">صورة المتسابق (اختياري)</label>
+                        <div class="avatar-upload" id="avatar-upload">
+                            <div class="avatar-preview" id="avatar-preview">
+                                <span class="avatar-placeholder">👤</span>
+                                <img id="avatar-img" class="hidden" alt="صورة المتسابق">
+                            </div>
+                            <input type="file" id="player-avatar" accept="image/*" style="opacity: 0; position: absolute; z-index: -1;">
+                            <div class="avatar-buttons">
+                                <button type="button" class="btn btn-sm" id="btn-upload-avatar">رفع من الجهاز</button>
+                                <button type="button" class="btn btn-sm btn-primary" id="btn-open-camera">التقاط بالكاميرا</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button id="btn-enter-game" class="btn btn-primary btn-lg" disabled>
+                        <span class="btn-icon">🚀</span>
+                        دخول المسابقة
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== شاشة ترحيب المتسابق (INTRO) ===== -->
+    <div id="intro-screen" class="screen">
+        <canvas id="bg-canvas-intro"></canvas>
+        <div class="intro-overlay">
+            <div class="intro-content">
+                <div class="intro-spotlight"></div>
+                <h2 class="intro-welcome">مرحبًا بك في تحدي المليون</h2>
+                <div class="intro-player-name" id="intro-player-name"></div>
+                <div class="intro-team-name" id="intro-team-name"></div>
+                <div class="intro-message">هل أنت مستعد للتحدي؟</div>
+                <button id="btn-begin-game" class="btn btn-primary btn-lg pulse-glow">
+                    <span class="btn-icon">🎯</span>
+                    لنبدأ!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== شاشة اللعب الرئيسية (GAME) ===== -->
+    <div id="game-screen" class="screen">
+        <canvas id="bg-canvas-game"></canvas>
+
+        <!-- شريط علوي: معلومات المتسابق + المساعدات -->
+        <div class="game-top-bar">
+            <div class="player-info-bar">
+                <div class="player-avatar-small" id="game-avatar">
+                    <span class="avatar-placeholder-sm">👤</span>
+                </div>
+                <span class="player-name-display" id="game-player-name"></span>
+            </div>
+
+            <!-- أيقونات المساعدات -->
+            <div class="lifelines-container" id="lifelines-container">
+                <button class="lifeline-btn" id="lifeline-5050-1" data-lifeline="fiftyFifty1" title="حذف إجابتين (1)">
+                    <div class="lifeline-icon">50:50</div>
+                    <div class="lifeline-used-mark hidden">✕</div>
+                </button>
+                <button class="lifeline-btn" id="lifeline-5050-2" data-lifeline="fiftyFifty2" title="حذف إجابتين (2)">
+                    <div class="lifeline-icon">50:50</div>
+                    <div class="lifeline-used-mark hidden">✕</div>
+                </button>
+                <button class="lifeline-btn" id="lifeline-phone" data-lifeline="phoneAFriend" title="الاتصال بصديق">
+                    <div class="lifeline-icon">📞</div>
+                    <div class="lifeline-used-mark hidden">✕</div>
+                </button>
+                <button class="lifeline-btn" id="lifeline-audience" data-lifeline="askAudience" title="تصويت الجمهور">
+                    <div class="lifeline-icon">👥</div>
+                    <div class="lifeline-used-mark hidden">✕</div>
+                </button>
+            </div>
+
+            <div class="game-controls-bar">
+                <button id="btn-walk-away" class="btn btn-danger btn-sm">
+                    <span class="btn-icon">🚪</span>
+                    الانسحاب
+                </button>
+                <button id="btn-game-mute" class="btn-icon-only btn-sm" title="كتم الصوت">🔊</button>
+            </div>
+        </div>
+
+        <!-- المنطقة الرئيسية: السؤال + سلم الجوائز -->
+        <div class="game-main-area">
+            <!-- سلم الجوائز -->
+            <div class="prize-ladder" id="prize-ladder">
+                <div class="ladder-title">سلم الجوائز</div>
+                <div class="ladder-levels" id="ladder-levels">
+                    <!-- يتم إنشاؤه ديناميكيًا -->
+                </div>
+            </div>
+
+            <!-- منطقة السؤال -->
+            <div class="question-area" id="question-area">
+                <!-- صورة المتسابق الكبيرة فوق السؤال -->
+                <div class="player-hero" id="player-hero">
+                    <div class="player-hero-avatar" id="player-hero-avatar">
+                        <span class="player-hero-placeholder">👤</span>
+                    </div>
+                    <div class="player-hero-name" id="player-hero-name"></div>
+                    <div class="player-hero-team" id="player-hero-team"></div>
+                </div>
+
+                <!-- معلومات السؤال -->
+                <div class="question-info">
+                    <span class="question-number" id="question-number">السؤال 1</span>
+                    <span class="question-difficulty" id="question-difficulty">سهل جدًا</span>
+                    <span class="question-prize" id="question-prize">100 درهم</span>
+                </div>
+
+                <!-- صندوق السؤال -->
+                <div class="question-box" id="question-box">
+                    <div class="question-glow"></div>
+                    <div class="question-text" id="question-text"></div>
+                    <div class="question-image hidden" id="question-image-container">
+                        <img id="question-image" alt="صورة السؤال">
+                    </div>
+                </div>
+
+                <!-- الإجابات -->
+                <div class="answers-grid" id="answers-grid">
+                    <button class="answer-btn" id="answer-A" data-answer="A">
+                        <span class="answer-letter">أ</span>
+                        <span class="answer-text" id="answer-text-A"></span>
+                    </button>
+                    <button class="answer-btn" id="answer-B" data-answer="B">
+                        <span class="answer-letter">ب</span>
+                        <span class="answer-text" id="answer-text-B"></span>
+                    </button>
+                    <button class="answer-btn" id="answer-C" data-answer="C">
+                        <span class="answer-letter">ج</span>
+                        <span class="answer-text" id="answer-text-C"></span>
+                    </button>
+                    <button class="answer-btn" id="answer-D" data-answer="D">
+                        <span class="answer-letter">د</span>
+                        <span class="answer-text" id="answer-text-D"></span>
+                    </button>
+                </div>
+
+                <!-- زر تثبيت الإجابة -->
+                <div class="lock-answer-area hidden" id="lock-answer-area">
+                    <button id="btn-lock-answer" class="btn btn-warning btn-lg pulse-glow">
+                        <span class="btn-icon">🔒</span>
+                        تثبيت الإجابة
+                    </button>
+                </div>
+
+                <!-- زر السؤال التالي -->
+                <div class="next-question-area hidden" id="next-question-area">
+                    <button id="btn-next-question" class="btn btn-primary btn-lg">
+                        <span class="btn-icon">➡️</span>
+                        السؤال التالي
+                    </button>
+                </div>
+
+                <!-- شرح الإجابة -->
+                <div class="explanation-area hidden" id="explanation-area">
+                    <div class="explanation-box">
+                        <span class="explanation-icon">💡</span>
+                        <p id="explanation-text"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== نافذة الاتصال بصديق ===== -->
+        <div class="lifeline-overlay hidden" id="phone-overlay">
+            <div class="lifeline-modal phone-modal">
+                <div class="modal-header">
+                    <h3>📞 الاتصال بصديق</h3>
+                    <div class="phone-timer-display">
+                        <div class="timer-circle" id="phone-timer-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="timer-bg" cx="50" cy="50" r="45"/>
+                                <circle class="timer-progress" id="phone-timer-progress" cx="50" cy="50" r="45"/>
+                            </svg>
+                            <span class="timer-text" id="phone-timer-text">30</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="phone-question-preview">
+                        <p class="preview-label">السؤال:</p>
+                        <p class="preview-text" id="phone-question-text"></p>
+                        <div class="preview-answers" id="phone-answers-preview"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-start-phone-timer" class="btn btn-primary">
+                        <span class="btn-icon">▶️</span>
+                        بدء الوقت
+                    </button>
+                    <button id="btn-end-phone" class="btn btn-danger">
+                        <span class="btn-icon">📵</span>
+                        إنهاء المكالمة
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== نافذة تصويت الجمهور ===== -->
+        <div class="lifeline-overlay hidden" id="audience-overlay">
+            <div class="lifeline-modal audience-modal">
+                <div class="modal-header">
+                    <h3>👥 تصويت الجمهور</h3>
+                    <div class="audience-timer-display">
+                        <div class="timer-circle" id="audience-timer-circle">
+                            <svg viewBox="0 0 100 100">
+                                <circle class="timer-bg" cx="50" cy="50" r="45"/>
+                                <circle class="timer-progress" id="audience-timer-progress" cx="50" cy="50" r="45"/>
+                            </svg>
+                            <span class="timer-text" id="audience-timer-text">30</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <!-- حالة التصويت الجاري -->
+                    <div class="audience-voting" id="audience-voting">
+                        <div class="voting-animation">
+                            <div class="voting-dots">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <p class="voting-text">الجمهور يصوّت الآن...</p>
+                        </div>
+                    </div>
+                    <!-- نتائج التصويت -->
+                    <div class="audience-results hidden" id="audience-results">
+                        <div class="chart-container" id="audience-chart">
+                            <div class="chart-bar" data-answer="A">
+                                <div class="bar-fill" id="bar-A"></div>
+                                <span class="bar-percent" id="percent-A">0%</span>
+                                <span class="bar-label">أ</span>
+                            </div>
+                            <div class="chart-bar" data-answer="B">
+                                <div class="bar-fill" id="bar-B"></div>
+                                <span class="bar-percent" id="percent-B">0%</span>
+                                <span class="bar-label">ب</span>
+                            </div>
+                            <div class="chart-bar" data-answer="C">
+                                <div class="bar-fill" id="bar-C"></div>
+                                <span class="bar-percent" id="percent-C">0%</span>
+                                <span class="bar-label">ج</span>
+                            </div>
+                            <div class="chart-bar" data-answer="D">
+                                <div class="bar-fill" id="bar-D"></div>
+                                <span class="bar-percent" id="percent-D">0%</span>
+                                <span class="bar-label">د</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-back-from-audience" class="btn btn-primary hidden">
+                        <span class="btn-icon">↩️</span>
+                        العودة إلى السؤال
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== نافذة تأكيد الانسحاب ===== -->
+        <div class="lifeline-overlay hidden" id="walkaway-overlay">
+            <div class="lifeline-modal walkaway-modal">
+                <div class="modal-header">
+                    <h3>🚪 تأكيد الانسحاب</h3>
+                </div>
+                <div class="modal-body">
+                    <p class="walkaway-message">هل أنت متأكد من الانسحاب؟</p>
+                    <div class="walkaway-amount">
+                        <p class="amount-label">المبلغ الذي ستحصل عليه:</p>
+                        <p class="amount-value" id="walkaway-amount">0</p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="btn-confirm-walkaway" class="btn btn-danger">
+                        <span class="btn-icon">✅</span>
+                        نعم، أنسحب
+                    </button>
+                    <button id="btn-cancel-walkaway" class="btn btn-primary">
+                        <span class="btn-icon">↩️</span>
+                        العودة إلى السؤال
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== شاشة نهاية اللعبة (GAME_OVER) ===== -->
+    <div id="gameover-screen" class="screen">
+        <canvas id="bg-canvas-gameover"></canvas>
+        <div class="gameover-overlay">
+            <div class="gameover-content" id="gameover-content">
+                <!-- يتم ملؤها ديناميكيًا حسب نتيجة اللعب -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== شاشة الفوز الكبير (GRAND_PRIZE_WIN) ===== -->
+    <div id="grandprize-screen" class="screen">
+        <canvas id="bg-canvas-grandprize"></canvas>
+        <canvas id="confetti-canvas"></canvas>
+        <div class="grandprize-overlay">
+            <div class="grandprize-content">
+                <div class="gp-lights"></div>
+                <h1 class="gp-title">🏆 مبروووك! 🏆</h1>
+                <div class="gp-player-name" id="gp-player-name"></div>
+                <div class="gp-amount-container">
+                    <p class="gp-label">لقد فزت بـ</p>
+                    <p class="gp-amount" id="gp-amount">1,000,000</p>
+                    <p class="gp-currency" id="gp-currency"></p>
+                </div>
+                <div class="gp-buttons">
+                    <button id="btn-gp-screenshot" class="btn btn-gold">
+                        <span class="btn-icon">📸</span>
+                        التقاط صورة
+                    </button>
+                    <button id="btn-gp-newgame" class="btn btn-primary btn-lg">
+                        <span class="btn-icon">🔄</span>
+                        جولة جديدة
+                    </button>
+                    <button id="btn-gp-home" class="btn btn-secondary">
+                        <span class="btn-icon">🏠</span>
+                        الصفحة الرئيسية
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== لوحة التحكم (ADMIN) ===== -->
+    <div id="admin-screen" class="screen">
+        <div class="admin-container">
+            <!-- شريط التنقل -->
+            <div class="admin-sidebar">
+                <div class="admin-logo">
+                    <span>⚙️</span>
+                    <h3>لوحة التحكم</h3>
+                </div>
+                <nav class="admin-nav">
+                    <button class="admin-nav-btn active" data-tab="questions">📋 إدارة الأسئلة</button>
+                    <button class="admin-nav-btn" data-tab="settings">🎛️ الإعدادات</button>
+                    <button class="admin-nav-btn" data-tab="prizes">🏆 سلم الجوائز</button>
+                    <button class="admin-nav-btn" data-tab="import-export">📦 استيراد / تصدير</button>
+                </nav>
+                <button id="btn-admin-back" class="btn btn-secondary admin-back-btn">
+                    <span class="btn-icon">↩️</span>
+                    العودة
+                </button>
+            </div>
+
+            <!-- محتوى لوحة التحكم -->
+            <div class="admin-content">
+                <!-- تبويب إدارة الأسئلة -->
+                <div class="admin-tab active" id="tab-questions">
+                    <div class="admin-header">
+                        <h2>إدارة الأسئلة</h2>
+                        <div class="admin-actions">
+                            <button id="btn-add-question" class="btn btn-primary">
+                                <span class="btn-icon">➕</span>
+                                إضافة سؤال
+                            </button>
+                        </div>
+                    </div>
+                    <div class="admin-filters">
+                        <input type="text" id="question-search" class="form-input" placeholder="بحث في الأسئلة...">
+                        <select id="filter-difficulty" class="form-select">
+                            <option value="">جميع المستويات</option>
+                            <option value="1">المستوى 1 - سهل جدًا</option>
+                            <option value="2">المستوى 2 - سهل جدًا</option>
+                            <option value="3">المستوى 3 - سهل جدًا</option>
+                            <option value="4">المستوى 4 - سهل</option>
+                            <option value="5">المستوى 5 - سهل</option>
+                            <option value="6">المستوى 6 - متوسط</option>
+                            <option value="7">المستوى 7 - متوسط</option>
+                            <option value="8">المستوى 8 - متوسط</option>
+                            <option value="9">المستوى 9 - صعب نوعًا ما</option>
+                            <option value="10">المستوى 10 - صعب نوعًا ما</option>
+                            <option value="11">المستوى 11 - صعب</option>
+                            <option value="12">المستوى 12 - صعب</option>
+                            <option value="13">المستوى 13 - صعب جدًا</option>
+                            <option value="14">المستوى 14 - صعب جدًا</option>
+                            <option value="15">المستوى 15 - سؤال المليون</option>
+                        </select>
+                        <select id="filter-category" class="form-select">
+                            <option value="">جميع التصنيفات</option>
+                        </select>
+                    </div>
+                    <div class="questions-list" id="questions-list">
+                        <!-- يتم ملؤها ديناميكيًا -->
+                    </div>
+                    <div class="questions-stats" id="questions-stats"></div>
+                </div>
+
+                <!-- تبويب الإعدادات -->
+                <div class="admin-tab" id="tab-settings">
+                    <div class="admin-header">
+                        <h2>إعدادات المسابقة</h2>
+                        <div class="admin-actions">
+                            <button id="btn-reset-settings" class="btn btn-danger btn-sm">استعادة الافتراضي</button>
+                            <button id="btn-save-settings" class="btn btn-primary">حفظ الإعدادات</button>
+                        </div>
+                    </div>
+                    <div class="settings-form" id="settings-form">
+                        <div class="settings-section">
+                            <h3>🎨 الهوية</h3>
+                            <div class="form-group">
+                                <label for="setting-quiz-name">اسم المسابقة</label>
+                                <input type="text" id="setting-quiz-name" class="form-input" value="تحدي المليون">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-currency">العملة</label>
+                                <input type="text" id="setting-currency" class="form-input" value="درهم">
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h3>🎮 اللعب</h3>
+                            <div class="form-group">
+                                <label for="setting-question-count">عدد الأسئلة</label>
+                                <input type="number" id="setting-question-count" class="form-input" value="15" min="5" max="20">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-reveal-delay">مدة الانتظار قبل إعلان الإجابة (ثانية)</label>
+                                <input type="number" id="setting-reveal-delay" class="form-input" value="3" min="1" max="10">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-auto-advance">الانتقال التلقائي للسؤال التالي</label>
+                                <select id="setting-auto-advance" class="form-select">
+                                    <option value="false">يدوي</option>
+                                    <option value="true">تلقائي</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-confirm-lock">تفعيل زر تثبيت الإجابة</label>
+                                <select id="setting-confirm-lock" class="form-select">
+                                    <option value="true">مفعّل</option>
+                                    <option value="false">معطّل - الإجابة مباشرة</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-presenter-mode">وضع المقدم</label>
+                                <select id="setting-presenter-mode" class="form-select">
+                                    <option value="false">معطّل</option>
+                                    <option value="true">مفعّل</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h3>⏱️ المؤقتات</h3>
+                            <div class="form-group">
+                                <label for="setting-phone-duration">مدة الاتصال بصديق (ثانية)</label>
+                                <input type="number" id="setting-phone-duration" class="form-input" value="30" min="10" max="120">
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-audience-duration">مدة تصويت الجمهور (ثانية)</label>
+                                <input type="number" id="setting-audience-duration" class="form-input" value="30" min="10" max="120">
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h3>🔊 الصوت</h3>
+                            <div class="form-group">
+                                <label for="setting-music-volume">مستوى الموسيقى</label>
+                                <input type="range" id="setting-music-volume" class="form-range" min="0" max="100" value="70">
+                                <span id="music-volume-display">70%</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-sfx-volume">مستوى المؤثرات</label>
+                                <input type="range" id="setting-sfx-volume" class="form-range" min="0" max="100" value="80">
+                                <span id="sfx-volume-display">80%</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-countdown-sound">صوت العد التنازلي</label>
+                                <select id="setting-countdown-sound" class="form-select">
+                                    <option value="true">مفعّل</option>
+                                    <option value="false">معطّل</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="settings-section">
+                            <h3>🎬 العرض</h3>
+                            <div class="form-group">
+                                <label for="setting-fullscreen-start">ملء الشاشة عند بدء الجولة</label>
+                                <select id="setting-fullscreen-start" class="form-select">
+                                    <option value="false">معطّل</option>
+                                    <option value="true">مفعّل</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="setting-reduced-motion">تقليل الحركة</label>
+                                <select id="setting-reduced-motion" class="form-select">
+                                    <option value="false">معطّل</option>
+                                    <option value="true">مفعّل</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- تبويب سلم الجوائز -->
+                <div class="admin-tab" id="tab-prizes">
+                    <div class="admin-header">
+                        <h2>سلم الجوائز</h2>
+                        <div class="admin-actions">
+                            <button id="btn-save-prizes" class="btn btn-primary">حفظ التغييرات</button>
+                        </div>
+                    </div>
+                    <div class="prizes-form" id="prizes-form">
+                        <!-- يتم ملؤها ديناميكيًا -->
+                    </div>
+                </div>
+
+                <!-- تبويب الاستيراد والتصدير -->
+                <div class="admin-tab" id="tab-import-export">
+                    <div class="admin-header">
+                        <h2>استيراد وتصدير البيانات</h2>
+                    </div>
+                    <div class="import-export-content">
+                        <div class="ie-section">
+                            <h3>📥 استيراد الأسئلة</h3>
+                            <p>يمكنك استيراد الأسئلة من ملف JSON أو CSV</p>
+                            <div class="ie-buttons">
+                                <button id="btn-import-json" class="btn btn-primary">
+                                    <span class="btn-icon">📄</span>
+                                    استيراد JSON
+                                </button>
+                                <button id="btn-import-csv" class="btn btn-primary">
+                                    <span class="btn-icon">📊</span>
+                                    استيراد CSV
+                                </button>
+                                <input type="file" id="import-file-input" class="hidden" accept=".json,.csv">
+                            </div>
+                        </div>
+                        <div class="ie-section">
+                            <h3>📤 تصدير البيانات</h3>
+                            <p>تصدير نسخة احتياطية من الأسئلة والإعدادات</p>
+                            <div class="ie-buttons">
+                                <button id="btn-export-questions" class="btn btn-secondary">
+                                    <span class="btn-icon">📋</span>
+                                    تصدير الأسئلة (JSON)
+                                </button>
+                                <button id="btn-export-all" class="btn btn-secondary">
+                                    <span class="btn-icon">💾</span>
+                                    تصدير كل شيء
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ie-section">
+                            <h3>🔄 إعادة الضبط</h3>
+                            <p>إعادة ضبط جميع البيانات إلى الإعدادات الافتراضية</p>
+                            <div class="ie-buttons">
+                                <button id="btn-reset-lifelines" class="btn btn-warning">
+                                    <span class="btn-icon">🔄</span>
+                                    إعادة ضبط المساعدات
+                                </button>
+                                <button id="btn-reset-all" class="btn btn-danger">
+                                    <span class="btn-icon">⚠️</span>
+                                    إعادة ضبط كل شيء
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== نافذة تعديل/إضافة سؤال ===== -->
+    <div class="modal-overlay hidden" id="question-modal-overlay">
+        <div class="question-modal">
+            <div class="modal-header">
+                <h3 id="question-modal-title">إضافة سؤال جديد</h3>
+                <button class="modal-close" id="btn-close-question-modal">✕</button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="edit-question-id">
+                <div class="form-group">
+                    <label for="edit-question-text">نص السؤال *</label>
+                    <textarea id="edit-question-text" class="form-input form-textarea" rows="3" placeholder="اكتب السؤال هنا..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-question-category">التصنيف</label>
+                        <input type="text" id="edit-question-category" class="form-input" placeholder="مثل: معلومات عامة">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-question-difficulty">مستوى الصعوبة *</label>
+                        <select id="edit-question-difficulty" class="form-select">
+                            <option value="1">1 - سهل جدًا</option>
+                            <option value="2">2 - سهل جدًا</option>
+                            <option value="3">3 - سهل جدًا</option>
+                            <option value="4">4 - سهل</option>
+                            <option value="5">5 - سهل</option>
+                            <option value="6">6 - متوسط</option>
+                            <option value="7">7 - متوسط</option>
+                            <option value="8">8 - متوسط</option>
+                            <option value="9">9 - صعب نوعًا ما</option>
+                            <option value="10">10 - صعب نوعًا ما</option>
+                            <option value="11">11 - صعب</option>
+                            <option value="12">12 - صعب</option>
+                            <option value="13">13 - صعب جدًا</option>
+                            <option value="14">14 - صعب جدًا</option>
+                            <option value="15">15 - سؤال المليون</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>الإجابات * (حدد الإجابة الصحيحة)</label>
+                    <div class="answers-edit-grid">
+                        <div class="answer-edit-row">
+                            <input type="radio" name="correct-answer" value="A" id="correct-A">
+                            <label for="correct-A" class="answer-label">أ</label>
+                            <input type="text" id="edit-answer-A" class="form-input" placeholder="الإجابة أ">
+                        </div>
+                        <div class="answer-edit-row">
+                            <input type="radio" name="correct-answer" value="B" id="correct-B">
+                            <label for="correct-B" class="answer-label">ب</label>
+                            <input type="text" id="edit-answer-B" class="form-input" placeholder="الإجابة ب">
+                        </div>
+                        <div class="answer-edit-row">
+                            <input type="radio" name="correct-answer" value="C" id="correct-C">
+                            <label for="correct-C" class="answer-label">ج</label>
+                            <input type="text" id="edit-answer-C" class="form-input" placeholder="الإجابة ج">
+                        </div>
+                        <div class="answer-edit-row">
+                            <input type="radio" name="correct-answer" value="D" id="correct-D">
+                            <label for="correct-D" class="answer-label">د</label>
+                            <input type="text" id="edit-answer-D" class="form-input" placeholder="الإجابة د">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit-explanation">شرح الإجابة (اختياري)</label>
+                    <textarea id="edit-explanation" class="form-input form-textarea" rows="2" placeholder="شرح مختصر..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="edit-question-enabled">حالة السؤال</label>
+                    <select id="edit-question-enabled" class="form-select">
+                        <option value="true">مفعّل</option>
+                        <option value="false">معطّل</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-save-question" class="btn btn-primary">حفظ السؤال</button>
+                <button id="btn-cancel-question" class="btn btn-secondary">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== لوحة دخول لوحة التحكم ===== -->
+    <div class="modal-overlay hidden" id="admin-login-overlay">
+        <div class="lifeline-modal admin-login-modal">
+            <div class="modal-header">
+                <h3>🔐 دخول لوحة التحكم</h3>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="admin-password">كلمة المرور</label>
+                    <input type="password" id="admin-password" class="form-input" placeholder="أدخل كلمة المرور...">
+                    <p class="hint-text">كلمة المرور الافتراضية: admin</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btn-admin-login" class="btn btn-primary">دخول</button>
+                <button id="btn-admin-login-cancel" class="btn btn-secondary">إلغاء</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== لوحة المقدم ===== -->
+    <div class="presenter-panel hidden" id="presenter-panel">
+        <div class="presenter-header">
+            <h3>🎬 وضع المقدم</h3>
+            <button id="btn-toggle-presenter" class="btn-icon-only" title="إخفاء لوحة المقدم">✕</button>
+        </div>
+        <div class="presenter-controls">
+            <div class="presenter-section">
+                <h4>التحكم بالسؤال</h4>
+                <button id="pres-show-question" class="btn btn-sm btn-primary">إظهار السؤال</button>
+                <button id="pres-show-answer-a" class="btn btn-sm">إظهار أ</button>
+                <button id="pres-show-answer-b" class="btn btn-sm">إظهار ب</button>
+                <button id="pres-show-answer-c" class="btn btn-sm">إظهار ج</button>
+                <button id="pres-show-answer-d" class="btn btn-sm">إظهار د</button>
+            </div>
+            <div class="presenter-section">
+                <h4>التحكم بالإجابة</h4>
+                <button id="pres-lock-answer" class="btn btn-sm btn-warning">تثبيت الإجابة</button>
+                <button id="pres-reveal-answer" class="btn btn-sm btn-primary">إظهار النتيجة</button>
+                <button id="pres-next-question" class="btn btn-sm btn-primary">السؤال التالي</button>
+            </div>
+            <div class="presenter-section">
+                <h4>المساعدات</h4>
+                <button id="pres-5050" class="btn btn-sm">50:50</button>
+                <button id="pres-phone" class="btn btn-sm">📞 الاتصال</button>
+                <button id="pres-audience" class="btn btn-sm">👥 الجمهور</button>
+            </div>
+            <div class="presenter-section">
+                <h4>الموسيقى</h4>
+                <button id="pres-play-suspense" class="btn btn-sm">▶️ تشويق</button>
+                <button id="pres-stop-music" class="btn btn-sm btn-danger">⏹️ إيقاف</button>
+            </div>
+            <div class="presenter-section">
+                <h4>إدارة الجولة</h4>
+                <button id="pres-skip-question" class="btn btn-sm btn-warning">⏭️ تجاوز السؤال</button>
+                <button id="pres-restart-question" class="btn btn-sm">🔄 إعادة السؤال</button>
+                <button id="pres-end-game" class="btn btn-sm btn-danger">🏁 إنهاء الجولة</button>
+            </div>
+            <div class="presenter-section">
+                <h4>معلومات</h4>
+                <div class="presenter-info">
+                    <p>الإجابة الصحيحة: <strong id="pres-correct-answer">—</strong></p>
+                    <p>المستوى: <strong id="pres-current-level">—</strong></p>
+                    <p>المبلغ الحالي: <strong id="pres-current-prize">—</strong></p>
+                    <p>المبلغ المضمون: <strong id="pres-guaranteed-prize">—</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== كاميرا المتسابق ===== -->
+    <div id="camera-overlay" class="modal-overlay hidden">
+        <div class="modal-content camera-modal">
+            <h2 class="modal-title">التقاط صورة</h2>
+            <div class="camera-container">
+                <video id="camera-video" autoplay playsinline></video>
+                <img id="camera-snapshot" class="hidden" alt="صورة ملتقطة">
+                <canvas id="camera-canvas" class="hidden"></canvas>
+            </div>
+            <div class="camera-actions" id="camera-actions-live">
+                <button class="btn btn-primary btn-lg" id="btn-take-photo">📸 التقاط الصورة</button>
+                <button class="btn btn-secondary" id="btn-switch-camera">🔄 تبديل الكاميرا</button>
+            </div>
+            <div class="camera-actions hidden" id="camera-actions-review">
+                <button class="btn btn-primary" id="btn-use-photo">✅ استخدام الصورة</button>
+                <button class="btn btn-warning" id="btn-retake-photo">↩️ إعادة الالتقاط</button>
+            </div>
+            <button class="btn btn-danger btn-close-modal" id="btn-close-camera">إلغاء</button>
+        </div>
+    </div>
+
+    <!-- ===== إشعارات ===== -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- ===== تحميل السكربتات ===== -->
+    <script src="js/utils.js"></script>
+    <script src="js/sound-manager.js"></script>
+    <script src="js/game-engine.js"></script>
+    <script src="js/ui-manager.js"></script>
+    <script src="js/admin-panel.js"></script>
+    <script src="js/presenter-mode.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+/* ===== Large Screens & TV (16:9 Aspect Ratio) ===== */
+@media (min-width: 1400px) {
+    html {
+        font-size: 18px;
+    }
+
+    .question-box {
+        min-height: 150px;
+    }
+
+    .question-text {
+        font-size: 2.2rem;
+    }
+
+    .answer-btn {
+        padding: 1.2rem 2rem;
+        min-height: 80px;
+    }
+
+    .answer-text {
+        font-size: 1.5rem;
+    }
+
+    .logo-title {
+        font-size: 6rem;
+    }
+
+    .gp-title {
+        font-size: 6rem;
+    }
+
+    .gp-amount {
+        font-size: 8rem;
+    }
+}
+
+@media (aspect-ratio: 16/9) {
+    /* Optimizations for 16:9 displays (TVs) */
+    .game-main-area {
+        align-items: stretch;
+    }
+
+    .question-area {
+        justify-content: center;
+        padding: 3rem;
+    }
+
+    .answers-grid {
+        gap: 2rem 4rem;
+        margin-top: 2rem;
+    }
+}
+
+/* ===== Tablet Landscape (1024px and down) ===== */
+@media (max-width: 1200px) {
+    .prize-ladder {
+        width: 200px;
+    }
+
+    .answers-grid {
+        gap: 1rem 2rem;
+    }
+
+    .question-text {
+        font-size: 1.5rem;
+    }
+
+    .answer-text {
+        font-size: 1.1rem;
+    }
+}
+
+/* ===== Tablet Portrait (769px - 1024px) ===== */
+@media (max-width: 1024px) {
+    html {
+        font-size: 14px;
+    }
+
+    .logo-title {
+        font-size: 3.5rem;
+    }
+
+    .game-main-area {
+        flex-direction: column;
+    }
+
+    .prize-ladder {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-left: none;
+        border-bottom: 1px solid var(--glass-border);
+        padding: 0.5rem;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    }
+
+    .ladder-title {
+        display: none;
+    }
+
+    .ladder-levels {
+        flex-direction: row;
+        align-items: center;
+        padding: 0;
+        gap: 0.5rem;
+    }
+
+    .ladder-item {
+        flex-shrink: 0;
+        padding: 0.3rem 0.8rem;
+    }
+
+    .question-area {
+        padding: 1rem;
+    }
+
+    .question-box {
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+    }
+
+    .answers-grid {
+        gap: 1rem;
+    }
+
+    .admin-container {
+        flex-direction: column;
+    }
+
+    .admin-sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+        border-left: none;
+        border-bottom: 1px solid var(--glass-border);
+    }
+
+    .admin-logo {
+        margin-bottom: 0;
+    }
+
+    .admin-nav {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .admin-nav-btn {
+        padding: 0.5rem 1rem;
+        border-right: none;
+        border-bottom: 2px solid transparent;
+        white-space: nowrap;
+    }
+
+    .admin-nav-btn.active {
+        border-right: none;
+        border-bottom: 2px solid var(--primary);
+    }
+
+    .admin-back-btn {
+        margin: 0;
+    }
+}
+
+/* ===== Mobile (768px and down) ===== */
+@media (max-width: 768px) {
+    .answers-grid {
+        grid-template-columns: 1fr;
+        gap: 0.8rem;
+    }
+
+    .answer-btn {
+        min-height: 55px;
+        padding: 0.8rem 1rem;
+        border-radius: 30px;
+    }
+
+    .answer-btn::before, .answer-btn::after {
+        display: none; /* Hide side bars on mobile */
+    }
+
+    .question-info {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: center;
+        padding: 0.5rem;
+    }
+
+    .game-top-bar {
+        padding: 0 1rem;
+        height: auto;
+        flex-wrap: wrap;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .player-info-bar {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .lifelines-container {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 0.5rem;
+    }
+
+    .game-controls-bar {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .lifeline-btn {
+        width: 50px;
+        height: 35px;
+    }
+
+    .setup-container {
+        padding: 1.5rem;
+        width: 90%;
+    }
+
+    .intro-player-name {
+        font-size: 2.5rem;
+    }
+
+    .gp-amount {
+        font-size: 4rem;
+    }
+
+    .gp-title {
+        font-size: 3rem;
+    }
+
+    .gp-buttons {
+        flex-direction: column;
+    }
+
+    /* Larger buttons for touch */
+    .btn {
+        padding: 1rem;
+        width: 100%;
+    }
+
+    .lifeline-modal, .question-modal {
+        width: 95%;
+        margin: 10px;
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .answers-edit-grid .answer-edit-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .presenter-controls {
+        flex-wrap: wrap;
+    }
+}
+
+/* ===== Small Mobile (480px and down) ===== */
+@media (max-width: 480px) {
+    .logo-title {
+        font-size: 2.5rem;
+    }
+
+    .logo-diamond {
+        width: 80px;
+        height: 80px;
+    }
+
+    .diamond-icon {
+        font-size: 2rem;
+    }
+
+    .question-text {
+        font-size: 1.2rem;
+    }
+
+    .answer-text {
+        font-size: 1rem;
+    }
+    
+    .home-controls {
+        bottom: 1rem;
+        right: 1rem;
+    }
+}

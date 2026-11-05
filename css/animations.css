@@ -1,0 +1,204 @@
+/* ===== Keyframes ===== */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulseGlow {
+    from {
+        box-shadow: 0 0 10px rgba(0, 168, 255, 0.4);
+        transform: scale(1);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(0, 168, 255, 0.8), 0 0 40px rgba(0, 168, 255, 0.4);
+        transform: scale(1.02);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
+}
+
+@keyframes correctFlash {
+    0% { background-color: var(--success); box-shadow: 0 0 40px var(--success-glow); }
+    50% { background-color: var(--bg-darker); box-shadow: 0 0 0 transparent; }
+    100% { background-color: var(--success); box-shadow: 0 0 40px var(--success-glow); }
+}
+
+@keyframes wrongFlash {
+    0% { background-color: var(--danger); box-shadow: 0 0 40px var(--danger-glow); }
+    50% { background-color: var(--bg-darker); box-shadow: 0 0 0 transparent; }
+    100% { background-color: var(--danger); box-shadow: 0 0 40px var(--danger-glow); }
+}
+
+@keyframes lockedFlash {
+    0% { 
+        background: linear-gradient(to right, #8c4a00, #cc7a00, #8c4a00);
+        box-shadow: 0 0 20px var(--warning-glow);
+    }
+    100% { 
+        background: linear-gradient(to right, #e65100, #ff9100, #e65100);
+        box-shadow: 0 0 40px var(--warning-glow);
+    }
+}
+
+@keyframes selectedPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); box-shadow: 0 0 25px var(--warning-glow); }
+    100% { transform: scale(1); }
+}
+
+@keyframes diamondSpin {
+    0% { transform: rotate(45deg); }
+    100% { transform: rotate(405deg); }
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0); }
+}
+
+@keyframes confettiFall {
+    0% { transform: translateY(-100vh) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(360deg); }
+}
+
+@keyframes barGrow {
+    from { height: 0%; }
+}
+
+@keyframes timerPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); filter: drop-shadow(0 0 10px var(--danger)); }
+    100% { transform: scale(1); }
+}
+
+@keyframes spotlight {
+    0% { transform: translateX(-50%) rotate(-10deg); opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { transform: translateX(-50%) rotate(10deg); opacity: 0.5; }
+}
+
+@keyframes ladderHighlight {
+    0% { background-color: rgba(255, 215, 0, 0.2); }
+    100% { background-color: rgba(255, 215, 0, 0.8); }
+}
+
+@keyframes shakeWrong {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+@keyframes answerReveal {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes loadingPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+@keyframes votingDots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* ===== Animation Classes ===== */
+.animate-fade-in { animation: fadeIn 0.5s forwards; }
+.animate-fade-out { animation: fadeOut 0.5s forwards; }
+.animate-slide-up { animation: slideUp 0.5s forwards; }
+.animate-slide-down { animation: slideDown 0.5s forwards; }
+.animate-correct { animation: correctFlash 1.5s forwards; }
+.animate-wrong { animation: wrongFlash 1.5s, shakeWrong 0.5s forwards; }
+.animate-selected { animation: selectedPulse 1s infinite alternate; }
+.animate-locked { animation: lockedFlash 0.5s infinite alternate; }
+.animate-eliminated { opacity: 0.1 !important; transition: opacity 1s ease; pointer-events: none; }
+.animate-timer-warning { animation: timerPulse 0.5s infinite; color: var(--danger) !important; }
+
+.animate-reveal {
+    opacity: 0;
+    animation: answerReveal 0.5s forwards;
+}
+
+.animate-reveal:nth-child(1) { animation-delay: 0s; }
+.animate-reveal:nth-child(2) { animation-delay: 0.1s; }
+.animate-reveal:nth-child(3) { animation-delay: 0.2s; }
+.animate-reveal:nth-child(4) { animation-delay: 0.3s; }
+
+.voting-dots span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary);
+    border-radius: 50%;
+    margin: 0 3px;
+    animation: floatUp 1s infinite;
+}
+.voting-dots span:nth-child(2) { animation-delay: 0.2s; }
+.voting-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+/* ===== Reduced Motion ===== */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+    animation: none !important;
+    transition: none !important;
+}
